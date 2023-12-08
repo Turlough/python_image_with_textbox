@@ -1,12 +1,11 @@
 import sys
 
 
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QTextEdit, QScrollArea
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QTextEdit, QScrollArea
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtCore import Qt
 from PIL import Image, ImageQt
-from PyQt5.QtGui import QFont
-
+from PyQt6.QtGui import QFont
 
 image_path = r"images\sample_document.jpg"
 
@@ -20,6 +19,9 @@ class ImageViewer(QWidget):
         # Vertical layout
         layout = QVBoxLayout(self)
         self.label = QLabel(self)
+        # Prepare PIL version- need to display grayscale for legibility
+        pil_image = Image.open(image_path)
+        self.q_image = ImageQt.ImageQt(pil_image)
         # Set the QPixmap
         self.pixmap = QPixmap(image_path)
         self.label.setPixmap(self.pixmap)
@@ -49,4 +51,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     viewer = ImageViewer()
     viewer.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
