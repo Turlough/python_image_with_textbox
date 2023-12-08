@@ -7,7 +7,7 @@ from PIL import Image
 from PyQt6.QtGui import QFont
 from PIL.ImageQt import ImageQt
 
-image_path = r"images\sample_document.jpg"
+image_path = r"images\sample_document.tif"
 
 
 class ImageViewer(QWidget):
@@ -50,15 +50,18 @@ class ImageViewer(QWidget):
         self.setLayout(layout)
 
 
-if __name__ == '__main__':
-
-    # Prepare PIL version- need to display grayscale for legibility
-    image = Image.open(image_path)
-    image = image.convert('L') # Grayscale
-
+def launch(image):
     # Launch
     app = QApplication(sys.argv)
     viewer = ImageViewer()
     viewer.init_ui(image)
     viewer.show()
     sys.exit(app.exec())
+
+
+if __name__ == '__main__':
+    # Prepare PIL version- need to display grayscale for legibility
+    image = Image.open(image_path)
+    image = image.convert('L')  # Grayscale
+
+    launch(image)
