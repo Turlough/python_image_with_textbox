@@ -42,7 +42,6 @@ _, thresh = cv2.threshold(blurred, 100, 255, cv2.THRESH_BINARY_INV)
 # Find contours in the binary mask
 contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 print('Contours', len(contours))
-# input('stop')
 
 contours = sorted(contours, key=cv2.contourArea, reverse=True)
 # Filter out small contours
@@ -57,14 +56,14 @@ print('Bounding rectangle x, y, w, h', x, y, w, h)
 cv2.rectangle(image, (x, y), (x + w, y + h), color1, thickness)
 bz = BreedZones(x, y)
 for i in range(12):
-    tl, br = bz.get_rectangle(i)
-    cv2.rectangle(image, tl, br, color2, 10)
+    # tl, br, _ = bz.get_rectangle(i)
+    tl, br = bz.find_ink_zones(image, i)
+    if tl is not None:
+        cv2.rectangle(image, tl, br, color2, 10)
 
 # Scale down the image to 25% of its original size
 scaled_image = cv2.resize(image, None, fx=scale, fy=scale)
 cv2.namedWindow('Image')
-cv2.setMouseCallback('Image', mouse_callback)
-
 cv2.imshow('Image', scaled_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
