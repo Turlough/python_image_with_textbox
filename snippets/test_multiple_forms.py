@@ -18,8 +18,6 @@ scale = 0.17
 color1 = (0, 0, 255)
 color2 = (0, 255, 0)
 thickness = 5
-# Target areas
-x1, y1 = 600, 75
 
 
 # Mouse callback function to display the coordinates of the mouse click,
@@ -48,18 +46,19 @@ print('Contours', len(contours))
 
 contours = sorted(contours, key=cv2.contourArea, reverse=True)
 # Filter out small contours
-min_contour_area = 10
+min_contour_area = 100
 filtered_contours = [contour for contour in contours if cv2.contourArea(contour) > min_contour_area]
 
 form_contour = filtered_contours[0]
 
 x, y, w, h = cv2.boundingRect(form_contour)
-print(x, y, w, h)
+print('Bounding rectangle x, y, w, h', x, y, w, h)
 # Outer outer_boundary
 cv2.rectangle(image, (x, y), (x + w, y + h), color1, thickness)
-bz = BreedZones()
-tl, br = bz.get_rectangle(0)
-cv2.rectangle(image, tl, br, color2, 10)
+bz = BreedZones(x, y)
+for i in range(12):
+    tl, br = bz.get_rectangle(i)
+    cv2.rectangle(image, tl, br, color2, 10)
 
 # Scale down the image to 25% of its original size
 scaled_image = cv2.resize(image, None, fx=scale, fy=scale)
